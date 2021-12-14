@@ -1,0 +1,18 @@
+[
+  {
+    "name": {
+      "en": "AL-JAWAAMI’U",
+      "ar": "الْجَوَامِعُ"
+    },
+    "id": "001",
+    "type": "kaamila"
+  },
+  {
+    "name": {
+      "en": "AL-TUKLAANU",
+      "ar": "دُعَاءُ التُّكْلَانِ"
+    },
+    "id": "002",
+    "type": "kaamila"
+  }
+]
