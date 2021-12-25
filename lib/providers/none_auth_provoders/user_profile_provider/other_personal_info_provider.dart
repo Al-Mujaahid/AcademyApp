@@ -9,7 +9,7 @@ import 'package:muslim_app/src/base_provider.dart';
 import 'package:muslim_app/services/non_auth_apis/user_profile_actions/update_profile_action.dart';
 import 'package:muslim_app/utils/muslim_navigation.dart';
 
-class UpdateProfileProvider extends BaseProvider {
+class OtherPersonalInfoProvider extends BaseProvider {
   String? _phone;
   String? _nick_name;
   String? _branch;
@@ -174,45 +174,49 @@ class UpdateProfileProvider extends BaseProvider {
           _sex == null &&
           _skills == null &&
           _social_media == null) {
-        Alerts.responseAlert(context, 'All fields are required',
-            (){Navigator.pop(context);});
+        Alerts.responseAlert(context, 'All fields are required', () {
+          Navigator.pop(context);
+        });
       } else {
         Alerts.loadingAlert(context, "Profile update in progress...");
         FocusScope.of(context).unfocus();
         setLoading = true;
-        var updateResponse = await UpdateProfileAction.updateProfileAction(
-            phone: _phone,
-            nick_name: _nick_name,
-            branch: _branch,
-            school: _school,
-            classs: _classs,
-            course_of_study: _course_of_study,
-            qualification: _qualification,
-            no_of_children: _no_of_children,
-            social_media: _social_media,
-            skills: _skills,
-            availability_status: _availability_status,
-            marital_status: _marital_status,
-            post: _post,
-            address: _address,
-            sex: _sex);
+        var updateResponse =
+            await UpdateProfileAction.updateOtherPersonalInfoAction(
+                phone: _phone,
+                nick_name: _nick_name,
+                branch: _branch,
+                school: _school,
+                classs: _classs,
+                course_of_study: _course_of_study,
+                qualification: _qualification,
+                no_of_children: _no_of_children,
+                social_media: _social_media,
+                skills: _skills,
+                availability_status: _availability_status,
+                marital_status: _marital_status,
+                post: _post,
+                address: _address,
+                sex: _sex);
         Alerts.closeLoadingAlert();
         print("Updating user is $updateResponse");
 
         print("Muslim Register Response is $updateResponse");
-        Alerts.responseAlert(context, 'Update successful',
-                (){ForwardNavigation.withNoReturn(context, UserProfile());});
-
+        Alerts.responseAlert(context, 'Update successful', () {
+          ForwardNavigation.withNoReturn(context, UserProfile());
+        });
       }
     } catch (e) {
       print("Muslim error: $e");
-      Alerts.responseAlert(context, 'Some error occurred', (){ForwardNavigation.withNoReturn(context, HomeIndex());});
+      Alerts.responseAlert(context, 'Some error occurred', () {
+        ForwardNavigation.withNoReturn(context, HomeIndex());
+      });
       BotToast.closeAllLoading();
       ForwardNavigation.withNoReturn(context, UserProfile());
     }
   }
 
-  UpdateProfileProvider() {
+  EmailUsernamePhoneProvider() {
     checkFormValidity();
   }
 }

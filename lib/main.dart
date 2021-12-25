@@ -15,8 +15,8 @@ import 'package:muslim_app/providers/none_auth_provoders/pending_request_provide
 import 'package:muslim_app/providers/none_auth_provoders/rate_mentor_mentee.dart';
 import 'package:muslim_app/providers/none_auth_provoders/schedule_provider/create_schedule.dart';
 import 'package:muslim_app/providers/none_auth_provoders/schedule_provider/get_schedule.dart';
-import 'package:muslim_app/providers/none_auth_provoders/user_profile_provider/update_provider.dart';
-import 'package:muslim_app/providers/none_auth_provoders/user_profile_provider/user_profile_provider.dart';
+import 'package:muslim_app/providers/none_auth_provoders/user_profile_provider/other_personal_info_provider.dart';
+import 'package:muslim_app/providers/none_auth_provoders/user_profile_provider/get_user_profile_provider.dart';
 import 'package:muslim_app/unauthorised_users/unauthorised_tabs_index.dart';
 import 'package:muslim_app/utils/constants.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +24,6 @@ import 'package:hive/hive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:muslim_app/providers/auth_providers/register_provider.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,14 +42,14 @@ void main() async {
     ChangeNotifierProvider(create: (context) => GetMentorProvider()),
     ChangeNotifierProvider(create: (context) => GetMenteeProvider()),
     ChangeNotifierProvider(create: (context) => GetMentorProvider()),
-    ChangeNotifierProvider(create: (context) => AcceptOrDeclineRequestProvider()),
+    ChangeNotifierProvider(
+        create: (context) => AcceptOrDeclineRequestProvider()),
     ChangeNotifierProvider(create: (context) => AdhkarScreenProvider()),
     ChangeNotifierProvider(create: (context) => CreateScheduleProvider()),
     ChangeNotifierProvider(create: (context) => GetScheduleProvider()),
-    ChangeNotifierProvider(create: (context) => UpdateProfileProvider()),
+    ChangeNotifierProvider(create: (context) => OtherPersonalInfoProvider()),
     ChangeNotifierProvider(create: (context) => RateMentorMenteeProvider()),
     ChangeNotifierProvider(create: (context) => GetPendingRequestsProvider()),
-
   ], child: MyApp()));
 }
 
@@ -70,7 +68,9 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return botToastBuilder(context, child);
       },
-      navigatorObservers: [BotToastNavigatorObserver(),],
+      navigatorObservers: [
+        BotToastNavigatorObserver(),
+      ],
     );
   }
 }

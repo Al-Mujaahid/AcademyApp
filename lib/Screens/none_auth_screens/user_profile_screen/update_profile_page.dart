@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:muslim_app/providers/none_auth_provoders/user_profile_provider/update_provider.dart';
+import 'package:muslim_app/providers/none_auth_provoders/user_profile_provider/other_personal_info_provider.dart';
 import 'package:muslim_app/utils/style.dart';
 import 'package:muslim_app/widgets/SideSpace.dart';
 import 'package:muslim_app/widgets/YSpace.dart';
@@ -14,7 +14,7 @@ class UpdatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(child:
-          Consumer<UpdateProfileProvider>(builder: (context, value, child) {
+          Consumer<OtherPersonalInfoProvider>(builder: (context, value, child) {
         return (SideSpace(
           15,
           30,

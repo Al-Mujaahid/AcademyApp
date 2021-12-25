@@ -15,14 +15,19 @@ class GetMenteeProvider extends BaseProvider {
   }
   void getMentor() async {
     try {
+      setLoading = true;
       // Alerts.loadingAlert(context, "Trying to get mentees");
       BotToast.showLoading();
 
       var mentorResponse = await MenteeList.getMentees();
       List mentees = List.from(mentorResponse['data']);
       print(mentees);
-      menteeModel =  mentees.map((json) => MenteeModel.fromJson(json)).where((element) => element.id != UserProfile.one_user_id).toList();
+      menteeModel = mentees
+          .map((json) => MenteeModel.fromJson(json))
+          .where((element) => element.id != UserProfile.one_user_id)
+          .toList();
       Alerts.closeLoadingAlert();
+      setLoading = false;
       notifyListeners();
     } catch (e) {
       print("ErrorMuslimAPP..... $e");

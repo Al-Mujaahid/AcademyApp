@@ -10,13 +10,6 @@ import 'package:muslim_app/widgets/icon.dart';
 import 'package:muslim_app/widgets/text.dart';
 import 'package:provider/provider.dart';
 
-// class LoginRegister extends StatefulWidget {
-//   const LoginRegister({Key? key}) : super(key: key);
-
-//   @override
-//   _LoginRegisterState createState() => _LoginRegisterState();
-// }
-
 class LoginRegister extends StatelessWidget {
   const LoginRegister({Key? key}) : super(key: key);
   @override

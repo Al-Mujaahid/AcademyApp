@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:muslim_app/Screens/auth_screens/login_screen.dart';
 import 'package:muslim_app/providers/auth_providers/forgot_password.dart';
-import 'package:muslim_app/providers/auth_providers/login_provider.dart';
 import 'package:muslim_app/providers/auth_providers/register_provider.dart';
-import 'package:muslim_app/helper/alerts.dart';
 import 'package:muslim_app/utils/style.dart';
 import 'package:muslim_app/widgets/SideSpace.dart';
 import 'package:muslim_app/widgets/XSpace.dart';
 import 'package:muslim_app/widgets/YSpace.dart';
-import 'package:muslim_app/widgets/button.dart';
 import 'package:muslim_app/widgets/icon.dart';
 import 'package:muslim_app/widgets/text.dart';
 import 'package:provider/provider.dart';

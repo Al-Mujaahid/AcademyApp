@@ -2,7 +2,7 @@ import 'package:muslim_app/services/api_basics/ApiBasics.dart';
 import 'package:muslim_app/utils/endpoints.dart';
 
 class UpdateProfileAction {
-  static Future updateProfileAction(
+  static Future updateOtherPersonalInfoAction(
       {phone,
       nick_name,
       branch,
@@ -37,4 +37,6 @@ class UpdateProfileAction {
     };
     return ApiBasics.makePostRequest(UPDATE_USER_PROFILE, data, null);
   }
+
+  
 }

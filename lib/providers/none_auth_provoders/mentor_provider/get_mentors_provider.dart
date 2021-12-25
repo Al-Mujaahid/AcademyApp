@@ -13,14 +13,19 @@ class GetMentorProvider extends BaseProvider {
   }
   void getMentor() async {
     try {
+      setLoading = true;
       // Alerts.loadingAlert(context, "Trying to get azkar");
       BotToast.showLoading();
       var mentorResponse = await MentorList.getMentors();
       List mentors = List.from(mentorResponse['data']);
       print('ooooooooetttttting');
       print(mentors);
-      mentorModel =  mentors.map((json) => MentorModel.fromJson(json)).where((element) => element.id != UserProfile.one_user_id).toList();
+      mentorModel = mentors
+          .map((json) => MentorModel.fromJson(json))
+          .where((element) => element.id != UserProfile.one_user_id)
+          .toList();
       Alerts.closeLoadingAlert();
+      setLoading = false;
       notifyListeners();
     } catch (e) {
       print("ErrorMuslimAPP..... $e");
