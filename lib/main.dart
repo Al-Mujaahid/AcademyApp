@@ -46,7 +46,6 @@ void main() async {
         create: (context) => AcceptOrDeclineRequestProvider()),
     ChangeNotifierProvider(create: (context) => AdhkarScreenProvider()),
     ChangeNotifierProvider(create: (context) => CreateScheduleProvider()),
-    ChangeNotifierProvider(create: (context) => GetScheduleProvider()),
     ChangeNotifierProvider(create: (context) => OtherPersonalInfoProvider()),
     ChangeNotifierProvider(create: (context) => RateMentorMenteeProvider()),
     ChangeNotifierProvider(create: (context) => GetPendingRequestsProvider()),

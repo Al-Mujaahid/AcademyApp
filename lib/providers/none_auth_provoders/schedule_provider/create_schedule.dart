@@ -6,27 +6,40 @@ import 'package:muslim_app/helper/alerts.dart';
 import 'package:muslim_app/services/non_auth_apis/schedule_meeting/create_schedule.dart';
 import 'package:muslim_app/src/base_provider.dart';
 import 'package:muslim_app/utils/muslim_navigation.dart';
+import 'package:provider/provider.dart';
 
 class CreateScheduleProvider extends BaseProvider {
 
-  String? _schedule_date;
+  DateTime? _schedule_date;
+  TimeOfDay? _schedule_time;
   bool formValidity = false;
+  String objective = '';
 
-  String get schedule_date => _schedule_date ?? '';
+  DateTime? get scheduleDate => _schedule_date;
+  TimeOfDay? get scheduleTime => _schedule_time;
 
 
 
-  set setschedule_date(String schedule_date) {
-    _schedule_date = schedule_date;
+  set setScheduleDate(DateTime schedulDate) {
+    _schedule_date = schedulDate;
     checkFormValidity();
     notifyListeners();
   }
 
+  set setScheduleTime(TimeOfDay scheduleTime) {
+    _schedule_time = scheduleTime;
+    checkFormValidity();
+    notifyListeners();
+  }
+
+  set setObjective(String obj) {
+    objective = obj;
+    notifyListeners();
+  }
 
 
   void checkFormValidity() {
-    if (
-        (_schedule_date != null) ) {
+    if ((_schedule_date != null) ) {
       formValidity = true;
     } else {
       formValidity = false;
@@ -34,31 +47,38 @@ class CreateScheduleProvider extends BaseProvider {
     notifyListeners();
   }
 
-  void schedule(BuildContext context) async {
+  void schedule(BuildContext context, {mentorId, menteeId}) async {
     try {
+      Alerts.loadingAlert(context, 'please wait...');
       print('schedule date is $_schedule_date');
-      if (_schedule_date == null) {
-        Alerts.responseAlert(context, 'Date not picked', (){Navigator.pop(context);});
+      if (_schedule_date == null || objective.isEmpty) {
+        Alerts.responseAlert(context, 'All fields are required', (){Navigator.pop(context);});
+
       } else {
         FocusScope.of(context).unfocus();
         setLoading = true;
+        final date = scheduleDate!;
+        final time = scheduleTime!;
+
         var scheduleResponse = await CreateSchedule.scheduleMeeting(
-          schedule_date: _schedule_date,
+          scheduleDate: "${date.year}/${date.month}/${date.day} - ${time.hour}:${time.minute}", mentorId: mentorId.toString(), menteeId: menteeId.toString(),
+          objective: objective
         );
         Alerts.closeLoadingAlert();
-        print("Muslim scheduleResponse Response is $scheduleResponse['message']");
+        print("Muslim scheduleResponse Response is ${scheduleResponse['message']}");
 
         print("Muslim scheduleResponse Response is $scheduleResponse");
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeIndex()),
-                (route) => false);
-        Alerts.responseAlert(context, 'Schedule creation successful', (){ForwardNavigation.withNoReturn(context, HomeIndex());});
-
+        // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeIndex()), (route) => false);
+        Alerts.responseAlert(context, 'Schedule creation successful', (){
+          // ForwardNavigation.withNoReturn(context, HomeIndex());
+          Navigator.pop(context);
+          Navigator.pop(context, true);
+        });
       }
+
     } catch (e) {
       print("Muslim error: $e");
-      Alerts.responseAlert(context, 'Schedule creation successful', (){ForwardNavigation.withNoReturn(context, HomeIndex());});
+      Alerts.errorAlert(context, 'An error occurred', () {}, () {});
       rethrow;
     }
   }

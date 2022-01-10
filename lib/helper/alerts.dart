@@ -15,6 +15,7 @@ class Alerts {
   }
 
   static errorAlert(context, String message, Function cancel, Function ok) {
+    closeLoadingAlert();
     showCupertinoDialog(
         context: context,
         builder: (context) {
@@ -50,6 +51,7 @@ class Alerts {
   }
 
   static successAlert(context, String message, Function ok) {
+    closeLoadingAlert();
     showCupertinoDialog(
         context: context,
         builder: (context) {
@@ -85,6 +87,7 @@ class Alerts {
   }
 
   static responseAlert(context, String message, Function ok) {
+    closeLoadingAlert();
     showCupertinoDialog(
         context: context,
         builder: (context) {
@@ -120,6 +123,7 @@ class Alerts {
   }
 
   static loadedAlert(BuildContext context, String message) {
+    closeLoadingAlert();
     showDialog(
         context: context,
         builder: (context) {

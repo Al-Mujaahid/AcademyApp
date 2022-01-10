@@ -10,8 +10,10 @@ class GetScheduleModel {
   String? mentor_comment;
   String? mentee_comment;
   String? status;
+  String? mentee_status;
+  String? mentor_status;
   String? schedule_date;
-  String? mentor;
+  // String? mentor;
 
 
 
@@ -29,8 +31,10 @@ class GetScheduleModel {
         this.mentor_comment,
         this.mentee_comment,
         this.status,
+        this.mentee_status,
+        this.mentor_status,
         this.schedule_date,
-        this.mentor,
+        // this.mentor,
       }
       );
 
@@ -43,9 +47,11 @@ class GetScheduleModel {
     mentee_report = json['mentee_report'] ?? 'Nice meeting (Default REPORT)';
     mentee_ratings = json['mentee_ratings']?? 'Rate mentor 5 stars (Default RATING)';
     mentor_ratings = json['mentor_ratings'] ;
-    status = json['status']?? 'STARTED/CONCLUDED/PENDING';
+    status = json['status']?? 'PENDING';
+    status = json['mentor_status']?? 'PENDING';
+    status = json['mentee_status']?? 'PENDING';
     schedule_date = json['schedule_date']?? 'NIL';
-    mentor = json['mentor']?? 'NIL';
+    // mentor = json['mentor'] ?? 'NIL';
     mentor_comment = json['mentor_comment']?? 'I am ok with the session i had';
     mentee_comment = json['mentee_comment']?? 'I am ok with the session i had';
   }

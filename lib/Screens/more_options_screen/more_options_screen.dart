@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:muslim_app/Screens/auth_screens/login_screen.dart';
 import 'package:muslim_app/Screens/none_auth_screens/user_profile_screen/user_profile_page.dart';
 import 'package:muslim_app/utils/muslim_navigation.dart';
 import 'package:muslim_app/utils/style.dart';
@@ -116,6 +117,35 @@ class MoreOptions extends StatelessWidget {
                                 Colors.blue.shade500, 20),
                             XSpace(20),
                             TextOf('Reset password', 15, FontWeight.w500, ash2),
+                            Expanded(
+                              child: XSpace(10),
+                            ),
+                            MuslimAPPIcon(
+                                Icons.arrow_forward_ios_rounded, black, 10),
+                          ],
+                        )),
+                  ),
+                ),
+
+                YSpace(5),
+                InkWell(
+                  onTap: () {
+                    ForwardNavigation.withNoReturn(context, LoginRegister());
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: white,
+                      border: Border.all(color: white),
+                    ),
+                    child: SideSpace(
+                        10,
+                        10,
+                        Row(
+                          children: [
+                            MuslimAPPIcon(Icons.exit_to_app_rounded, Colors.blue.shade500, 20),
+                            XSpace(20),
+                            TextOf('Logout', 15, FontWeight.w500, ash2),
                             Expanded(
                               child: XSpace(10),
                             ),

@@ -5,24 +5,35 @@ import 'package:muslim_app/services/non_auth_apis/schedule_meeting/get_schedule.
 import 'package:muslim_app/src/base_provider.dart';
 
 class GetScheduleProvider extends BaseProvider {
-  List<GetScheduleModel> scheduleModel = [];
+  List<GetScheduleModel> scheduleList = [];
 
-  GetScheduleProvider() {
+  String _mentorId = '';
+  String _menteeId = '';
+
+  GetScheduleProvider({required String mentorId, required String menteeId}) {
+    _menteeId = menteeId;
+    _mentorId = mentorId;
     getSchedule();
   }
   void getSchedule() async {
     try {
-      BotToast.showLoading();
-      var scheduleResponse = await ScheduleActions.getSchedule();
+      // BotToast.showLoading();
+      setLoading = true;
+      var scheduleResponse = await ScheduleActions.getSchedule(
+        menteeId: _menteeId, mentorId: _mentorId
+      );
       List schedules = List.from(scheduleResponse['data']);
       print('trying to get schedules');
       print(schedules);
-      scheduleModel =  schedules.map((json) => GetScheduleModel.fromJson(json)).toList();
-      Alerts.closeLoadingAlert();
+      scheduleList =  schedules.map((json) => GetScheduleModel.fromJson(json)).toList();
+      // Alerts.closeLoadingAlert();
+      setLoading = false;
       notifyListeners();
     } catch (e) {
       print("ErrorMuslimAPP..... $e");
-      Alerts.closeLoadingAlert();
+      // Alerts.closeLoadingAlert();
+      setLoading = false;
+      rethrow;
     }
   }
 }

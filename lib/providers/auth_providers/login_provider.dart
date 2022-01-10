@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:muslim_app/helper/alerts.dart';
 import 'package:muslim_app/Screens/none_auth_screens/all_tabs_index.dart';
+import 'package:muslim_app/providers/none_auth_provoders/mentee_provider/get_mentee_provider.dart';
+import 'package:muslim_app/providers/none_auth_provoders/mentor_provider/get_mentors_provider.dart';
+import 'package:muslim_app/providers/none_auth_provoders/user_profile_provider/get_user_profile_provider.dart';
 import 'package:muslim_app/services/auth_apis/AuthAPI_Basics.dart';
 import 'package:muslim_app/src/base_provider.dart';
 import 'package:muslim_app/unauthorised_users/unauthorised_tabs_index.dart';
 import 'package:muslim_app/utils/constants.dart';
 import 'package:muslim_app/utils/index.dart';
 import 'package:muslim_app/utils/muslim_navigation.dart';
+import 'package:provider/provider.dart';
 
 class LoginProvider extends BaseProvider {
   String? _email;
@@ -64,7 +68,14 @@ class LoginProvider extends BaseProvider {
         Alerts.closeLoadingAlert();
         if (loginResponse['status'] == true) {
           var tokenBox = await Hive.openBox(TOKEN_BOX);
+          var userBox = await Hive.openBox(USER_DATA_BOX);
           tokenBox.put(TOKEN_KEY, loginResponse['data']["token"]);
+          userBox.put(USER_LOGGED_IN_KEY, true);
+
+          Provider.of<UserProfileProvider>(context, listen: false).userProfile();
+          Provider.of<GetMentorProvider>(context, listen: false).getMentor();
+          Provider.of<GetMenteeProvider>(context, listen: false).getMentor();
+
           Alerts.successAlert(context, "Login successful", (){
             ForwardNavigation.withNoReturn(context, HomeIndex());
           });

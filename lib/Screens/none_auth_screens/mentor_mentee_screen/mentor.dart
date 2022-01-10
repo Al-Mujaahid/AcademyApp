@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:muslim_app/Screens/none_auth_screens/mentor_mentee_screen/pending_mentor_request.dart';
+import 'package:muslim_app/Screens/none_auth_screens/mentor_mentee_screen/view_mentee/view_mentee_screen.dart';
+import 'package:muslim_app/Screens/none_auth_screens/mentor_mentee_screen/view_mentor/view_mentor_screen.dart';
 import 'package:muslim_app/Screens/none_auth_screens/user_profile_screen/user_profile_page.dart';
 import 'package:muslim_app/model/mentor_model.dart';
 import 'package:muslim_app/model/pending_request_model.dart';
@@ -17,316 +19,205 @@ import 'package:provider/provider.dart';
 import 'schedule/get_all_schedule.dart';
 
 class MentorListPage extends StatelessWidget {
-  static int? mentor_id_of_mentor;
-  static String? mentor_first_name;
-  static String? mentor_last_name;
-
-  static int? number_of_mentors;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SideSpace(
-          0,
-          0,
-          SideSpace(
-            10,
-            0,
-            Container(
-              child: Container(child:
-                  Consumer<GetMentorProvider>(builder: (context, value, child) {
+      body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Consumer<GetMentorProvider>(
+              builder: (context, value, child) {
                 value.setBuildContext = context;
-                if (!value.loading) {
-                  Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          ForwardNavigation.withReturn(
-                              context, PendingMentor());
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(color: green),
-                          child: SideSpace(
-                            10,
-                            0,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextOf("Pending mentors...", 14,
-                                    FontWeight.w700, light_green),
-                                TextOf(
-                                    PendingMentor.length_of_pending.toString(),
-                                    14,
-                                    FontWeight.w700,
-                                    light_green)
-                              ],
+                if (value.loading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                /// if the list of mentee is empty
+                if (value.mentorList.isEmpty) {
+                  return SideSpace(
+                    10,
+                    10,
+                    Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 46,
+                              backgroundColor: green,
+                              child: Positioned(
+                                  left: 10,
+                                  right: 10,
+                                  top: 10,
+                                  bottom: 10,
+                                  child: CircleAvatar(
+                                    radius: 45,
+                                    backgroundColor: ash_lite,
+                                    child: ImageIcon(
+                                      AssetImage("assets/images/mentee.png"),
+                                      color: green,
+                                      size: 40,
+                                    ),
+                                  )),
+                            ),
+                            YSpace(20),
+                            TextOf('My mentees', 20, FontWeight.bold, ash2),
+                            YSpace(7),
+                            Text(
+                              "You have no mentees yet!\n Your mentees appear here after you've both been asigned to each other and accepted your match.",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.mulish(
+                                  color: ash1, fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            YSpace(5),
+                            TextOf('Check pending requests', 15, FontWeight.w300, green),
+                            YSpace(5),
+                            InkWell(
+                                onTap: () {
+                                  ForwardNavigation.withReturn(context, PendingMentor());
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: white, width: 2),
+                                      color: green,
+                                      borderRadius: BorderRadius.circular(13)),
+                                  child: Center(
+                                    child: SideSpace(30, 15,
+                                        TextOf("Proceed", 20, FontWeight.w800, white)),
+                                  ),
+                                )
+                            ),
+                          ],
+                        )),
+                  );
+                }
+
+                return Container(
+                  // padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            ForwardNavigation.withReturn(context, PendingMentor());
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(color: green),
+                            child: SideSpace(
+                              10,
+                              0,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  TextOf("Pending mentees...", 14, FontWeight.w700, light_green),
+                                  Spacer(),
+                                  TextOf(Provider.of<GetPendingRequestsProvider>(context, listen: false).pendingMenteeRequest.length.toString(), 14, FontWeight.w700, light_green),
+                                  XSpace(16),
+                                  InkWell(
+                                      onTap: () => Provider.of<GetMentorProvider>(context, listen: false).getMentor(),
+                                      child: Icon(Icons.refresh, size: 24,)
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                          child: ListView.builder(
+                        Expanded(
+                          child: ListView.separated(
+                              separatorBuilder: (context, index) => Divider(thickness: 0.5, color: Colors.grey.shade300, height: 1,),
                               shrinkWrap: true,
-                              itemCount: value.mentorModel.length,
+                              itemCount: value.mentorList.length,
                               itemBuilder: (BuildContext context, int index) {
-                                MentorModel mentor = value.mentorModel[index];
-                                mentor_id_of_mentor = mentor.id;
-                                MentorListPage.mentor_first_name =
-                                    mentor.first_name;
-                                MentorListPage.mentor_last_name =
-                                    mentor.last_name;
-                                MentorListPage.number_of_mentors =
-                                    value.mentorModel.length;
-                                return InkWell(
+                                MentorModel mentee = value.mentorList[index];
+                                return ListTile(
                                   onTap: () {
-                                    ForwardNavigation.withReturn(
-                                        context, MentorDetail());
+                                    ForwardNavigation.withReturn(context, ViewMentorScreen(mentor: mentee));
                                   },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: light_green,
-                                        border: Border.all(color: green),
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    child: SideSpace(
-                                      10,
-                                      5,
-                                      Row(
-                                        children: [
-                                          Stack(children: [
-                                            CircleAvatar(
-                                              radius: 30,
-                                              backgroundColor: green,
-                                            ),
-                                            Positioned(
-                                              child: CircleAvatar(
-                                                radius: 28,
-                                                backgroundColor: white,
-                                              ),
-                                              left: 1,
-                                              right: 1,
-                                              top: 1,
-                                              bottom: 1,
-                                            )
-                                          ]),
-                                          XSpace(10),
-                                          TextOf(mentor.first_name!, 20,
-                                              FontWeight.w700, ash2),
-                                          XSpace(10),
-                                          TextOf(mentor.last_name!, 20,
-                                              FontWeight.w700, ash2),
-                                        ],
-                                      ),
-                                    ),
+                                  title: Text("${mentee.first_name} ${mentee.last_name}"),
+                                  trailing: Icon(Icons.remove_red_eye),
+                                  leading: CircleAvatar(
+                                    radius: 15, backgroundColor: Colors.lightBlue,
                                   ),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                 );
-                              }))
-                    ],
-                  );
-                }
-                return SideSpace(
-                  10,
-                  10,
-                  Container(
-                    child: Center(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          radius: 46,
-                          backgroundColor: green,
-                          child: Positioned(
-                              left: 10,
-                              right: 10,
-                              top: 10,
-                              bottom: 10,
-                              child: CircleAvatar(
-                                radius: 45,
-                                backgroundColor: ash_lite,
-                                child: ImageIcon(
-                                  AssetImage("assets/images/mentee.png"),
-                                  color: green,
-                                  size: 40,
-                                ),
-                              )),
-                        ),
-                        YSpace(20),
-                        TextOf('My mentors', 20, FontWeight.bold, ash2),
-                        YSpace(7),
-                        Text(
-                          "You have no mentors yet!\n Your mentors appear here after you've both been asigned to each other and accepted your match.",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.mulish(
-                              color: ash1,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        YSpace(5),
-                        TextOf('Check pending requests', 15, FontWeight.w300,
-                            green),
-                        YSpace(5),
-                        InkWell(
-                            onTap: () {
-                              ForwardNavigation.withNoReturn(
-                                  context, PendingMentor());
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: white, width: 2),
-                                  color: green,
-                                  borderRadius: BorderRadius.circular(13)),
-                              child: Center(
-                                child: SideSpace(
-                                    30,
-                                    15,
-                                    TextOf(
-                                        "Proceed", 20, FontWeight.w800, white)),
-                              ),
-                            )),
+                              }
+                          ),
+                        )
                       ],
-                    )),
-                  ),
+                    )
                 );
-                ;
-              })),
-            ),
-          )),
+              }
+          )
+      )
     );
   }
 }
 
-class PendingMentor extends StatelessWidget {
-  const PendingMentor({Key? key}) : super(key: key);
+class PendingMentor extends StatefulWidget {
   static int? length_of_pending;
+
+  const PendingMentor({Key? key}) : super(key: key);
+
+
+  @override
+  State<PendingMentor> createState() => _PendingMentorState();
+}
+
+class _PendingMentorState extends State<PendingMentor> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadPendingMentorRequest();
+  }
+
+  void loadPendingMentorRequest() async {
+    Provider.of<GetPendingRequestsProvider>(context, listen: false).getPendingRequests();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: TextOf('Pending mentors', 20, FontWeight.w700, white),
-        backgroundColor: green,
+        backgroundColor: green, elevation: 0,
       ),
       body: Column(
         children: [
+          YSpace(16),
           Expanded(child: Consumer<GetPendingRequestsProvider>(
               builder: (context, value, child) {
             value.setBuildContext = context;
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: value.pendingRequestModel.length,
-                itemBuilder: (BuildContext context, int index) {
-                  PendingRequestModel pending =
-                      value.pendingRequestModel[index];
-                  //....................
-                  //....................
-                  PendingMentor.length_of_pending =
-                      value.pendingRequestModel.length;
-                  PendingRequestPage.user_id = pending.id;
-                  if (pending.mentee_id != UserProfile.one_user_id) {
-                    PendingRequestPage.recipient_id = pending.mentor_id;
-                  } else if (pending.mentor_id != UserProfile.one_user_id) {
-                    PendingRequestPage.recipient_id = pending.mentee_id;
-                  } else {
-                    PendingRequestPage.recipient_id = null;
-                  }
-                  ;
-                  return Column(
-                    children: [
-                      SideSpace(
-                          10,
-                          0,
-                          InkWell(
-                            onTap: () {
-                              ForwardNavigation.withReturn(
-                                  context, AcceptOrDecline());
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: light_green,
-                                  border: Border.all(color: green),
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: SideSpace(
-                                10,
-                                10,
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Stack(children: [
-                                          CircleAvatar(
-                                            radius: 30,
-                                            backgroundColor: green,
-                                          ),
-                                          Positioned(
-                                            child: CircleAvatar(
-                                              radius: 28,
-                                              backgroundColor: white,
-                                            ),
-                                            left: 1,
-                                            right: 1,
-                                            top: 1,
-                                            bottom: 1,
-                                          )
-                                        ]),
-                                        XSpace(10),
-                                        Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                TextOf(
-                                                    pending.mentor_first_name,
-                                                    20,
-                                                    FontWeight.w700,
-                                                    ash2),
-                                                XSpace(10),
-                                                TextOf(pending.mentor_last_name,
-                                                    20, FontWeight.w700, ash2),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    TextOf("Your status:", 10,
-                                                        FontWeight.bold, black),
-                                                    TextOf(
-                                                        "${pending.mentee_status}",
-                                                        10,
-                                                        FontWeight.w400,
-                                                        black),
-                                                  ],
-                                                ),
-                                                XSpace(20),
-                                                Column(
-                                                  children: [
-                                                    TextOf("Mentor status:", 10,
-                                                        FontWeight.bold, black),
-                                                    TextOf(
-                                                        "${pending.mentor_status}",
-                                                        10,
-                                                        FontWeight.w400,
-                                                        black)
-                                                  ],
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )),
-                      YSpace(8),
-                    ],
-                  );
-                });
+            return ListView.separated(
+              separatorBuilder: (context, index) => Divider(thickness: 0.5, color: Colors.grey.shade300, height: 1,),
+              shrinkWrap: true,
+              itemCount: value.pendingMentorRequest.length,
+              itemBuilder: (BuildContext context, int index) {
+                PendingMentorRequest pending = value.pendingMentorRequest[index];
+                //....................
+                //....................
+                PendingMentor.length_of_pending = value.pendingMentorRequest.length;
+                PendingRequestPage.user_id = pending.id;
+
+
+                return ListTile(
+                  onTap: () {
+                    ForwardNavigation.withReturn(context, AcceptOrDecline(mentorPendingRequest: pending,));
+                  },
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.lightBlue,
+                    radius: 21,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.blue,
+                    ),
+                  ),
+                  title: Text('Mentor Request'),
+                  subtitle: Text('${pending.mentor_first_name} ${pending.mentor_last_name}  have been assigned as your mentor'),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                );
+              });
           })),
         ],
       ),

@@ -95,7 +95,7 @@ class _ViewAdhkarScreenState extends State<ViewAdhkarScreen> {
                   color: Colors.white,
                   child: ListView.builder(
                     physics: BouncingScrollPhysics(),
-                    itemCount: adhkarContent['arabic']!.length,
+                    itemCount: adhkarContent['transliteration']!.length,
                     itemBuilder: (context, index) {
                       return Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -119,13 +119,13 @@ class _ViewAdhkarScreenState extends State<ViewAdhkarScreen> {
                   ),
                 ),
               ),
-              YSpace(30),
+              YSpace(100),
             ],
           ),
-          Positioned(
-            bottom: 0, left: 0, right: 0,
-            child: AdhkarPlayerWidget(),
-          )
+          // Positioned(
+          //   bottom: 0, left: 0, right: 0,
+          //   child: AdhkarPlayerWidget(),
+          // )
         ]),
       ),
     );

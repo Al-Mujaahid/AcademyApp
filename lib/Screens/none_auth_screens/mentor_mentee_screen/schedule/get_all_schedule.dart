@@ -50,9 +50,9 @@ class MentorDetail extends StatelessWidget{
                   TextOf('Your activities with', 15, FontWeight.w500, ash2),
                   Row(
                     children: [
-                      TextOf(MentorListPage.mentor_first_name!, 20, FontWeight.w900, ash2),
+                      TextOf("MentorListPage.mentor_first_name!", 20, FontWeight.w900, ash2),
                       XSpace(4),
-                      TextOf(MentorListPage.mentor_last_name!, 20, FontWeight.w900, ash2),
+                      TextOf("MentorListPage.mentor_last_name!", 20, FontWeight.w900, ash2),
                     ],
                   )
                 ],
@@ -60,9 +60,8 @@ class MentorDetail extends StatelessWidget{
             ],),
             Row(
               children: [
-                IconButton(onPressed: (){ForwardNavigation.withReturn(context, CreateSchedule());}, icon: Icon(Icons.video_camera_back_outlined, color: black,),),
+                // IconButton(onPressed: (){ForwardNavigation.withReturn(context, CreateScheduleScreen());}, icon: Icon(Icons.video_camera_back_outlined, color: black,),),
                 //IconButton(onPressed: (){ForwardNavigation.withReturn(context, RateMentorMenteePage());}, icon: Icon(Icons.star, color: Colors.amber,),),
-
               ],
             )
           ],
@@ -78,9 +77,9 @@ class MentorDetail extends StatelessWidget{
       ),
     Expanded(
     child: ListView.builder(
-    itemCount: value.scheduleModel.length,
+    itemCount: value.scheduleList.length,
     itemBuilder: (BuildContext context, int index) {
-      GetScheduleModel schedule = value.scheduleModel[index];
+      GetScheduleModel schedule = value.scheduleList[index];
       MentorDetail.schedule_id = schedule.id;
       MentorDetail.objective = schedule.objectives!;
     return InkWell(

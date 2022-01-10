@@ -5,6 +5,8 @@ import 'package:muslim_app/Screens/none_auth_screens/mentor_mentee_screen/mentor
 import 'package:muslim_app/Screens/none_auth_screens/update_profile_pages/other_personal_information.dart';
 import 'package:muslim_app/helper/edit_profile_alert.dart';
 import 'package:muslim_app/model/user_profile_model.dart';
+import 'package:muslim_app/providers/none_auth_provoders/mentee_provider/get_mentee_provider.dart';
+import 'package:muslim_app/providers/none_auth_provoders/mentor_provider/get_mentors_provider.dart';
 import 'package:muslim_app/providers/none_auth_provoders/user_profile_provider/get_user_profile_provider.dart';
 import 'package:muslim_app/utils/style.dart';
 import 'package:muslim_app/widgets/SideSpace.dart';
@@ -125,8 +127,7 @@ class UserProfile extends StatelessWidget {
                               Column(
                                 children: [
                                   TextOf(
-                                      MentorListPage.number_of_mentors
-                                          .toString(),
+                                      Provider.of<GetMentorProvider>(context, listen: false).mentorList.length.toString(),
                                       20,
                                       FontWeight.bold,
                                       black),
@@ -135,8 +136,7 @@ class UserProfile extends StatelessWidget {
                               ),
                               Column(
                                 children: [
-                                  TextOf(Mentee.number_of_mentees.toString(),
-                                      20, FontWeight.bold, black),
+                                  TextOf(Provider.of<GetMenteeProvider>(context, listen: false).menteeList.length.toString(), 20, FontWeight.bold, black),
                                   TextOf('Mentees', 20, FontWeight.w400, black)
                                 ],
                               ),

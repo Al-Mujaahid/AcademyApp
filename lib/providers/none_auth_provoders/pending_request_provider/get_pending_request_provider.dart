@@ -6,7 +6,8 @@ import 'package:muslim_app/services/non_auth_apis/pending_mentor_mentee_request/
 import 'package:muslim_app/src/base_provider.dart';
 
 class GetPendingRequestsProvider extends BaseProvider {
-   List<PendingRequestModel> pendingRequestModel = [];
+   List<PendingMentorRequest> pendingMentorRequest = [];
+   List<PendingMenteeRequest> pendingMenteeRequest = [];
 
   GetPendingRequestsProvider() {
     getPendingRequests();
@@ -14,16 +15,20 @@ class GetPendingRequestsProvider extends BaseProvider {
    getPendingRequests() async {
     try {
       BotToast.showLoading();
-      var pendingRequestResponse = await PendingMentorMentee.getPendingMentorMentee();
-      List mentors = List.from(pendingRequestResponse['data']);
-      print('ooooooooetttttting');
-      print(mentors);
-      pendingRequestModel =  mentors.map((json) => PendingRequestModel.fromJson(json)).toList();
+      var mentorRequest = await PendingMentorMentee.getPendingMentorRequest();
+      var menteeRequest = await PendingMentorMentee.getPendingMenteeRequest();
+      List mentors = List.from(mentorRequest['data']);
+      List mentee = List.from(menteeRequest['data']);
+
+      pendingMentorRequest =  mentors.map((json) => PendingMentorRequest.fromJson(json)).toList();
+      pendingMenteeRequest =  mentee.map((json) => PendingMenteeRequest.fromJson(json)).toList();
+
       Alerts.closeLoadingAlert();
       notifyListeners();
     } catch (e) {
       print("ErrorMuslimAPP..... $e");
       Alerts.closeLoadingAlert();
+      rethrow;
     }
   }
 }

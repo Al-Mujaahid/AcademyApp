@@ -4,12 +4,11 @@ import 'package:muslim_app/services/api_basics/ApiBasics.dart';
 import 'package:muslim_app/utils/endpoints.dart';
 
 class RateMentorMenteeAction {
-  static Future rateMentorMenteeAction(
-      {ratings,comments}) async {
+  static Future rateMentorMenteeAction({ratings,comments, mentorId}) async {
     //MentorDetail.schedule_id
     var data = {
       'ratings': ratings,
-      'recipient_id': MentorListPage.mentor_id_of_mentor,
+      'recipient_id': mentorId,
       'comments': comments,
       'schedule_id': MentorDetail.schedule_id
     };

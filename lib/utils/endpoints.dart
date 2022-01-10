@@ -36,13 +36,14 @@ const DELETE_NEWS = BASE_URL + 'news${1}';
 //----------------------------MENTOR/MENTEE
 const GET_MENTOR = BASE_URL + 'myMentors';
 const GET_MENTEES = BASE_URL + 'myMentees';
-const PENDING_MENTOR_MENTEE  = BASE_URL + 'userRequest';
+const PENDING_MENTOR_REQUEST  = BASE_URL + 'userMentorRequest';
+const PENDING_MENTEE_REQUEST  = BASE_URL + 'userMenteeRequest';
 const RATE_MENTOR_MENTEE =  BASE_URL + 'rate';
 //----------------------------ACCEPT OR DECLINE REQUEST
 const ACCEPT_OR_DECLINE_REQUEST = BASE_URL + 'acceptOrDecline';
 //----------------------------MEETING SCHEDULE
 const CREATE_SCHEDULE = BASE_URL + 'schedule';
-const GET_SCHEDULE = BASE_URL + 'schedule';
+const GET_SCHEDULE = BASE_URL + 'schedules';
 //const
 
 

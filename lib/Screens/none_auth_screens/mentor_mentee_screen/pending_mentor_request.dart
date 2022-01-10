@@ -34,33 +34,29 @@ class _PendingRequestPageState extends State<PendingRequestPage> {
                   return Column(
                     children: [
                       Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: green,
-                              border: Border.all(color: green),),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              PreviousPageIcon(white, 20),
-                              TextOf('Pending requests', 15, FontWeight.w700, white),
-                            Icon(Icons.arrow_back, color: green,)
-                            ],
-                          ),),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: green,
+                          border: Border.all(color: green),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            PreviousPageIcon(white, 20),
+                            TextOf('Pending requests', 15, FontWeight.w700, white),
+                          Icon(Icons.arrow_back, color: green,)
+                          ],
+                        ),
+                      ),
 
                       YSpace(10),
                       Expanded(
                         child: ListView.builder(
-                            itemCount: value.pendingRequestModel.length,
+                            itemCount: value.pendingMentorRequest.length,
                             itemBuilder: (BuildContext context, int index) {
-                              PendingRequestModel pending = value.pendingRequestModel[index];
+                              PendingMentorRequest pending = value.pendingMentorRequest[index];
                               PendingRequestPage.user_id  = pending.id;
-                              if(pending.mentee_id != UserProfile.one_user_id){
-                                PendingRequestPage.recipient_id = pending.mentor_id;
-                              }else if(pending.mentor_id != UserProfile.one_user_id){
-                                PendingRequestPage.recipient_id = pending.mentee_id;
-                              } else{
-                                PendingRequestPage.recipient_id = null;
-                              };
+
                               return Expanded(
                                 child:
                                 Column(
@@ -84,16 +80,16 @@ class _PendingRequestPageState extends State<PendingRequestPage> {
                                             TextOf(pending.mentor_comment, 15, FontWeight.w200, ash2),
                                             TextOf(pending.mentor_status, 15, FontWeight.w200, ash2),
                                             Divider(color: ash2, thickness: 1,),
-                                            TextOf('Mentee ', 15, FontWeight.w400, black),
-                                            YSpace(5),
-                                            Row(children: [TextOf(pending.mentee_first_name, 15, FontWeight.w200, ash2),
-                                              XSpace(3),
-                                              TextOf(pending.mentee_last_name, 15, FontWeight.w200, ash2),],),
-                                            TextOf(pending.mentee_email, 15, FontWeight.w200, ash2),
-                                            TextOf(pending.mentee_phone_number, 15, FontWeight.w200, ash2),
-                                            TextOf(pending.mentee_comment, 15, FontWeight.w200, ash2),
-                                            TextOf(pending.mentee_status, 15, FontWeight.w200, ash2),
-                                            YSpace(5),
+                                            // TextOf('Mentee ', 15, FontWeight.w400, black),
+                                            // YSpace(5),
+                                            // Row(children: [TextOf(pending.mentee_first_name, 15, FontWeight.w200, ash2),
+                                            //   XSpace(3),
+                                            //   TextOf(pending.mentee_last_name, 15, FontWeight.w200, ash2),],),
+                                            // TextOf(pending.mentee_email, 15, FontWeight.w200, ash2),
+                                            // TextOf(pending.mentee_phone_number, 15, FontWeight.w200, ash2),
+                                            // TextOf(pending.mentee_comment, 15, FontWeight.w200, ash2),
+                                            // TextOf(pending.mentee_status, 15, FontWeight.w200, ash2),
+                                            // YSpace(5),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
@@ -132,7 +128,10 @@ class _PendingRequestPageState extends State<PendingRequestPage> {
 }
 
 class AcceptOrDecline extends StatefulWidget {
-  AcceptOrDecline({Key? key}) : super(key: key);
+  AcceptOrDecline({Key? key, this.mentorPendingRequest, this.menteePendingRequest}) : super(key: key);
+
+  PendingMentorRequest? mentorPendingRequest;
+  PendingMenteeRequest? menteePendingRequest;
   @override
   _AcceptOrDeclineState createState() => _AcceptOrDeclineState();
 }
@@ -141,72 +140,105 @@ class _AcceptOrDeclineState extends State<AcceptOrDecline> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Consumer<AcceptOrDeclineRequestProvider>(builder: (context, value, child){
-        return Column(children: [
-          InkWell(
-            onTap: (){ForwardNavigation.withReturn(context, AcceptOrDecline());},
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: green,
-                border: Border.all(color: green),),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  PreviousPageIcon(white, 20),
-                  TextOf('Respond', 15, FontWeight.w700, white),
-                  Icon(Icons.arrow_back, color: green,)
-                ],
-              ),),
-          ),
-          YSpace(20),
-        SideSpace(10, 10, Column(
-            children: [
-              Column(crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextOf("Comment", 20, FontWeight.w500, ash2),
-                  TextFormField(
-                    onChanged: (String text) => value.setComment = text,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                        hintText: "Enter comment",
-                        border: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(color: green, width: 1))),
-                  )
-                ],
-              ),
-              YSpace(20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [InkWell(
-                  onTap: (){value.setStatus = 'ACCEPT';
-                  value.respond(context);},
+      body: SafeArea(child: Consumer<AcceptOrDeclineRequestProvider>(
+          builder: (context, value, child){
+            return Column(
+              children: [
+                InkWell(
+                  onTap: (){ForwardNavigation.withReturn(context, AcceptOrDecline());},
                   child: Container(
+                    width: double.infinity,
                     decoration: BoxDecoration(
-                        color: green,
-                        border: Border.all(color: white),
-                        borderRadius: BorderRadius.circular(40)),
-                    child: SideSpace(10, 5, TextOf('ACCEPT', 15, FontWeight.w700, white),),),
+                      color: green,
+                      border: Border.all(color: green),),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PreviousPageIcon(white, 20),
+                        TextOf('Respond', 15, FontWeight.w700, white),
+                        Icon(Icons.arrow_back, color: green,)
+                      ],
+                    ),),
                 ),
-                  InkWell(
-                    onTap: (){
-                      value.setStatus = 'DECLINE';
-                      value.respond(context);},
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: green,
-                          border: Border.all(color: white),
-                          borderRadius: BorderRadius.circular(40)),
-                      child: SideSpace(10, 5, TextOf('DECLINE', 15, FontWeight.w700, white),),),
+                YSpace(20),
+                if (widget.menteePendingRequest != null)
+                  ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text('${widget.menteePendingRequest!.mentee_first_name} ${widget.menteePendingRequest!.mentee_last_name} have been assigned to you as your Mentee, you can either accept or decline this request.', style: TextStyle(
+                          fontSize: 16, color: Colors.black45
+                      ),),
+                    )
+                  ],
+                if (widget.mentorPendingRequest != null)
+                  ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text('${widget.mentorPendingRequest!.mentor_first_name} ${widget.mentorPendingRequest!.mentor_last_name} have been assigned to you as your Mentor, you can either accept or decline this request.', style: TextStyle(
+                        fontSize: 16, color: Colors.black45
+                      ),),
+                    )
+                  ],
+                SizedBox(height: 30,),
+                SideSpace(
+                  10, 10,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      TextOf("Comment", 14, FontWeight.w500, ash2),
+                      SizedBox(height: 10,),
+                      TextFormField(
+                        onChanged: (String text) => value.setComment = text,
+                        keyboardType: TextInputType.text,
+                        minLines: 4,
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                            hintText: "Enter comment",
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(color: green, width: 1))),
+                      ),
+                      YSpace(20),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: (){
+                              value.setStatus = 'ACCEPT';
+
+                              value.respond(context, widget.menteePendingRequest == null ? widget.mentorPendingRequest!.mentor_id : widget.menteePendingRequest!.mentee_id );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: green,
+                                  border: Border.all(color: white),
+                                  borderRadius: BorderRadius.circular(40)),
+                              child: SideSpace(10, 5, TextOf('ACCEPT', 15, FontWeight.w700, white),),),
+                          ),
+                          XSpace(15),
+                          InkWell(
+                            onTap: (){
+                              value.setStatus = 'DECLINE';
+                              value.respond(context, widget.menteePendingRequest == null ? widget.mentorPendingRequest!.mentor_id : widget.menteePendingRequest!.mentee_id );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  border: Border.all(color: white),
+                                  borderRadius: BorderRadius.circular(40)),
+                              child: SideSpace(10, 5, TextOf('DECLINE', 15, FontWeight.w700, white),),),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-                ],)
-            ],
-          ),
-          )
-        ],);
-      })),
+                )
+              ],
+            );
+          }
+        )
+      ),
     );
   }
 }

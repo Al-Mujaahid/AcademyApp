@@ -10,7 +10,7 @@ class AcceptOrDeclineRequest {
   static get one_user_id => UserProfile.one_user_id;
   static get recipient_ids => PendingRequestPage.recipient_id;
   static Future acceptOrDeclineRequest({status, comment, recipient_id,}) {
-    var data = {'status': status, 'id': id, 'comment': comment, 'recipient_id': recipient_ids,};
+    var data = {'status': status, 'id': id, 'comment': comment, 'recipient_id': recipient_id,};
     return ApiBasics.makePostRequest(ACCEPT_OR_DECLINE_REQUEST, data, null);
 
   }

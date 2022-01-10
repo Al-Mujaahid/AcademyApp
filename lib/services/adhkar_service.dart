@@ -16,6 +16,9 @@ class AdhkarService {
     var arabicRaw = await rootBundle.loadString('assets/data/adhkar/$type/${id}_arabic.txt');
     var translation = await rootBundle.loadString('assets/data/adhkar/$type/${id}_translation.txt');
     var transliteration = await rootBundle.loadString('assets/data/adhkar/$type/${id}_transliteration.txt');
+    print("$type $id Arabic ${arabicRaw.length}");
+    print("$type $id Translation ${translation.length}");
+    print("$type $id Transliteration ${transliteration.length}");
     return {
       "arabic": arabicRaw.split('\n'),
       "translation": translation.split('\n'),

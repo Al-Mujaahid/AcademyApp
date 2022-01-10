@@ -14,5 +14,37 @@
     },
     "id": "002",
     "type": "kaamila"
+  },
+  {
+    "name": {
+      "en": "NUURUL AKWAANI",
+      "ar": "نُـــــورُاْلأَكْـــوَانِ"
+    },
+    "id": "004",
+    "type": "kaamila"
+  },
+  {
+    "name": {
+      "en": "ZAYNUL ‘AABIDEEN",
+      "ar": "زَينُ العَابِدِينَ"
+    },
+    "id": "005",
+    "type": "kaamila"
+  },
+  {
+    "name": {
+      "en": "AL-FAWAASILU",
+      "ar": "الْفَوَا صِلُ"
+    },
+    "id": "006",
+    "type": "kaamila"
+  },
+  {
+    "name": {
+      "en": "AL QAWAASIMU",
+      "ar": "الْــقَـــوَاصِـــمُ"
+    },
+    "id": "007",
+    "type": "kaamila"
   }
 ]

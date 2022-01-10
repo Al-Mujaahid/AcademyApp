@@ -8,7 +8,7 @@ import 'package:muslim_app/services/non_auth_apis/mentor_mentee/mentee_actions/g
 import 'package:muslim_app/src/base_provider.dart';
 
 class GetMenteeProvider extends BaseProvider {
-  List<MenteeModel> menteeModel = [];
+  List<MenteeModel> menteeList = [];
 
   GetMenteeProvider() {
     getMentor();
@@ -17,16 +17,16 @@ class GetMenteeProvider extends BaseProvider {
     try {
       setLoading = true;
       // Alerts.loadingAlert(context, "Trying to get mentees");
-      BotToast.showLoading();
+      // BotToast.showLoading();
 
       var mentorResponse = await MenteeList.getMentees();
       List mentees = List.from(mentorResponse['data']);
       print(mentees);
-      menteeModel = mentees
-          .map((json) => MenteeModel.fromJson(json))
+      menteeList = mentees
+          .map((json) => MenteeModel.fromJson(json['mentee']))
           .where((element) => element.id != UserProfile.one_user_id)
           .toList();
-      Alerts.closeLoadingAlert();
+      // Alerts.closeLoadingAlert();
       setLoading = false;
       notifyListeners();
     } catch (e) {
